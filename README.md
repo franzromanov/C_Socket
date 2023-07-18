@@ -1,2 +1,2 @@
 # C_Socket
-beginner c socket programming
+Beginner socket programming with C language
