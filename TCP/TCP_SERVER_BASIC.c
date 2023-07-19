@@ -19,8 +19,6 @@ scanf("%12s",ip);
 printf("port: ");
 scanf("%d",&port);
 
-
-
 //create_socket
  int net_sock=socket(AF_INET,SOCK_STREAM,0);
 
@@ -39,12 +37,19 @@ scanf("%d",&port);
 //accept
  int client_sock=accept(net_sock,NULL,NULL);
 //send
+ int stat=1;
  char msg[12]="Hello World";
- send(client_sock,msg,sizeof(msg),0);
-
+ char key[9]="crackers";
+ char err[13]="wrong input!";
+ char land[9];
+ recv(client_sock,land,sizeof(land),0);
+ for(int i=0;i<8;i++){
+  if(key[i]!=land[i]){stat=0;break;}
+}
+ if(stat==1)send(client_sock,msg,sizeof(msg),0);
+ else send(client_sock,err,sizeof(err),0);
 //esc
  close(net_sock);
  printf("\e[0;31m[!]\e[0;0mclosing\e[0;31m[!]\n");
  return 0;
 }
-
