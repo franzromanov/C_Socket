@@ -7,14 +7,18 @@
 #include <unistd.h>
 #include <string.h>
 
+//main
 int main(){
 int port;
 char ip[12];
+char fly [9];//password
 //ask
 printf("IP ADDRESS: ");
 scanf("%s",ip);
 printf("PORT: ");
 scanf("%d",&port);
+printf("password: ");
+scanf("%9s",fly);
 
 //create_socket
  int net_sock;
@@ -30,9 +34,11 @@ scanf("%d",&port);
  if(connect(net_sock,(struct sockaddr*)&net_addr,sizeof(net_addr))==-1)printf("\n\e[0;31m[!] \e[0;34mconnection error :: server not exist \e[0;31m[!]\n\n");
  else{
 //response
-  char voice[13];
-  recv(net_sock,voice,sizeof(voice),0);
-  printf("[SERVER]:%13s\n",voice);
+  char land[13];
+
+  send(net_sock,fly,sizeof(fly),0);
+  recv(net_sock,land,sizeof(land),0);
+  printf("[server]::%s\n",land);
 }
 //esc
  close(net_sock);
