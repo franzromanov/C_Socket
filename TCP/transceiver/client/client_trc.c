@@ -18,7 +18,7 @@ char ip[12];
 
 //::[index_parts]-----------------[1]
 FILE* file;
-char stream1[6];
+char stream1[64];
 char filename[32];
 int end;
 int ack=0;
@@ -88,7 +88,7 @@ int main(){
   send(c_sock,filename_u,sizeof(filename_u),0);
   //openfile
   file=fopen(filename_u,"r");
-  while(fgets(stream1,6,file)){
+  while(fgets(stream1,64,file)){
  
    //sending_eachByte
    send(c_sock,stream1,sizeof(stream1),0);
@@ -97,7 +97,7 @@ int main(){
 
 }
  //SENDING_END_CONDITION
- for(int i=0;i<6;i++)stream1[i]=0;
+ for(int i=0;i<64;i++)stream1[i]=0;
  send(c_sock,stream1,sizeof(stream1),0);
  end=2;
  write(c_sock,&end,sizeof(end));
