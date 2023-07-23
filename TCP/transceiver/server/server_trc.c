@@ -17,7 +17,7 @@ char ip[12];
 FILE* file;
 char filename[]="text2.txt";
 char filename_u[32];
-char stream[6]={0};
+char stream[64]={0};
 int end=1;
 int ack=0;
 
@@ -73,7 +73,7 @@ int main(){
   send(c_sock,filename,sizeof(filename),0);
   //read_file
   file=fopen(filename,"r");
-  while(fgets(stream,6,file)){
+  while(fgets(stream,64,file)){
 
    //sending_eachbyte
 
@@ -82,7 +82,7 @@ int main(){
 
   //download_end
 }
- for(int i=0;i<6;i++)stream[i]=0;
+ for(int i=0;i<64;i++)stream[i]=0;
  send(c_sock,stream,sizeof(stream),0);
  end=2;
  write(c_sock,&end,sizeof(end));
