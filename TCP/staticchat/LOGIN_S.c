@@ -28,8 +28,8 @@ struct sockaddr_in s_addr;//:::::addr_struct
 int s_sock;//:::::store_SocketCredentials
 int port,counter;
 char ip[16]="127.0.0.1";
-char admin[]= "E";//"Neo_Crackers";
-char password[]= "E";//"Eleutheria2812";
+char admin[]= "Neo_Crackers";
+char password[]="Eleutheria2812";
 char _askAdmin[13];
 char _askPassword[15];
 //-----------------------------------------------
@@ -43,12 +43,16 @@ char _usr_cli[]="EA_NASIR";
 char _pass_cli[]="copper_notgood666";
 typedef struct User_Creds{
  char name[256];
- char password[64];
+ char password[256];
 }LOG_IN;
 
 LOG_IN creds;
-
+int ack=0;
 //-----------------------------------------------
+
+
+
+
 
 //main
 int main(){
@@ -117,7 +121,7 @@ int main(){
   head_send[len_header-1]=-1;
 
   //usr_field
-  char usr_field[]="| \e[0;91m<<\e[0;91m[\e[0;97mUSERNAME\e[0;91m]\e[0;91m>>\e[0;97m ";
+  char usr_field[]="\e[0;94m| \e[0;91m<<\e[0;91m[\e[0;97mUSERNAME\e[0;91m]\e[0;91m>>\e[0;97m ";
   char* usr_send;
   int len_usr=sizeof(usr_field)+1;
   usr_send=malloc(sizeof(char)*len_usr);
@@ -137,30 +141,35 @@ int main(){
  //BEGIN_TO_ASK--------------------------------[2][LOCAL:1]
  //sending_HEADER
  send(c_sock,head_send,len_header,0);
-
+ recv(c_sock,&ack,sizeof(ack),0);
  //asking_creds
  while(1){
 
   //ask_usr
   send(c_sock,usr_send,len_usr,0);
-  printf("done\n");
+  //printf("name\n");
   recv(c_sock,creds.name,sizeof(creds.name),0);
+  //printf("%s\n",creds.name);
 
   //ask_pass
   send(c_sock,pass_send,len_pass,0);
-  printf("done\n");
+  //printf("pass\n");
   recv(c_sock,creds.password,sizeof(creds.password),0);
 
   //check_ans
-  if( strcpy(creds.name, _usr_cli)==0 && strcpy(creds.password, _pass_cli)==0 ){int stat=-3;send(c_sock,&stat,sizeof(stat),0); break; }
-  else continue;
+  if( strcmp(creds.name, _usr_cli)==0 && strcmp(creds.password, _pass_cli)==0 ){char stat=-3;send(c_sock,&stat,sizeof(stat),0); break; }
 
 }
+
+
+
 
 //------------------------DONE------------------------**
-
+//free_mem
+ fprintf(stdout,"\n[ %s ]\n[ %s ]\n\n\e[0;33mCLIENT_SUCCEED_LOGIN!!!\n",creds.name,creds.password);
+ free(head_send);
+ free(usr_send);
+ free(pass_send);
 //esc
  close(s_sock);
- printf("gg\n");
  return 0;
-}
