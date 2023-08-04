@@ -19,8 +19,6 @@
 //////////////////////////////////////////
 */
 
-
-
 //declare_variables
 
 //part-----------------------------------[1]
@@ -36,6 +34,8 @@ int length;
 
 char trc[256];
 int stat=0;
+int ack=66;
+
 //part--------------------------------------
 
 //main
@@ -72,16 +72,15 @@ int main(){
   //end_of_comms
   if(stat==-3)break;
  while(1){
-
   //get_fromserver
   recv(c_sock,trc,sizeof(trc),0);
 
   //for_header
-  if(trc[0]==-1)break;
-  if(trc[0]==-3){int stat=-3;break;}
+  if(trc[0]==-1){send(c_sock,&ack,sizeof(ack),0);break;}
+  if(trc[0]==-3){stat=-3;break;}
   //for_userinteract
   if(trc[0]==-2){
-   printf("done\n");
+
    //ask
    fscanf(stdin,"256%s",trc);
 
@@ -95,17 +94,17 @@ int main(){
 
 
   //for_header
-  if(length<256 && trc[length+1]==-1){fprintf(stdout,"%s",trc);break;}
+  if(length<256 && trc[length+1]==-1){fprintf(stdout,"%s",trc);send(c_sock,&ack,sizeof(ack),0);break;}
 
   //print_toConsole
   fprintf(stdout,"%s",trc);
 
   //for_userinteract
   if(length<256 && trc[length+1]==-2){
-   printf("done\n");
-   //ask
-   fscanf(stdin,"256%s",trc);
 
+   //ask
+   fscanf(stdin,"%s",trc);
+   //fprintf(stdout,"%s",trc);
    //send
    send(c_sock,trc,sizeof(trc),0);
 
@@ -113,14 +112,13 @@ int main(){
 }
 
 }
-
-
+  
  //comms_ended
 }
 
 //---------------------------------ENDED----------------------------------
 
-
 //esc
  close(c_sock);
  return 0;
+}
